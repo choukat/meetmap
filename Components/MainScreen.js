@@ -1,8 +1,9 @@
 // Components/mainScreen.js
 
 import React from 'react'
-import { StyleSheet, Text, View, Image, TextInput, Button, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, Image, TextInput, Button, ActivityIndicator} from 'react-native'
 import { testAPI, checkLogin } from '../API/meetmapDBApi'
+import { requestPositionPermission } from '../permissions/permissions'
 import { connect } from 'react-redux'
 import TopMenu from './TopMenu'
 import MapCustom from './MapCustom'
@@ -13,7 +14,7 @@ class MainScreen extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = { errorLog: false, profileMenu: false, actionMenu: false, isLoading: false }
+    this.state = { errorLog: false, profileMenu: false, actionMenu: false, isLoading: false, positionPermission: true }
     this.pseudo = ""
     this.password = ""
     this.avatar = ""
@@ -184,6 +185,14 @@ class MainScreen extends React.Component {
     }
   }
 
+  _displayWaitPermission() {
+    return(
+      <View style={styles.main_container}>
+        <Text>NON</Text>
+      </View>
+    )
+  }
+
   _clickOnProfile() {
     if(this.state.actionMenu) {
       this.setState({actionMenu: false})
@@ -199,13 +208,20 @@ class MainScreen extends React.Component {
   }
 
   render() {
-    if (this.props.logged) {
-      return(
-        this._displayMainPage()
-      )
+    if(this.state.positionPermission) {
+      if (this.props.logged) {
+        return(
+          this._displayMainPage()
+        )
+      } else {
+        return(
+          this._displayLoginPage()
+        )
+      }
     } else {
+
       return(
-        this._displayLoginPage()
+        this._displayWaitPermission()
       )
     }
   }
