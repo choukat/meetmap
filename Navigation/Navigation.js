@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
+import Constants from '../helpers/constants'
 import { createStackNavigator, createAppContainer, createBottomTabNavigator } from 'react-navigation'
 import MainScreen from '../Components/MainScreen'
 import CreateAccount from '../Components/CreateAccount'
@@ -25,43 +26,85 @@ const MainScreenStackNavigator = createStackNavigator({
   CreateAccount: {
     screen: CreateAccount,
     navigationOptions: {
-      title: 'Create new account'
+      title: 'Create new account',
+      headerStyle: {
+        backgroundColor: Constants.BACKGROUND_COLOR
+      },
+      headerTitleStyle: {
+        color: Constants.TEXT_COLOR
+      }
     }
   },
   Logout: {
     screen: Logout,
     navigationOptions: {
-      title: 'Logout'
+      title: 'Logout',
+      headerStyle: {
+        backgroundColor: Constants.BACKGROUND_COLOR
+      },
+      headerTitleStyle: {
+        color: Constants.TEXT_COLOR
+      }
     }
   },
   EditProfile: {
     screen: EditProfile,
     navigationOptions: {
-      title: 'Edit profile'
+      title: 'Edit profile',
+      headerStyle: {
+        backgroundColor: Constants.BACKGROUND_COLOR
+      },
+      headerTitleStyle: {
+        color: Constants.TEXT_COLOR
+      }
     }
   },
   EditPassword: {
     screen: EditPassword,
     navigationOptions: {
-      title: 'Edit password'
+      title: 'Edit password',
+      headerStyle: {
+        backgroundColor: Constants.BACKGROUND_COLOR
+      },
+      headerTitleStyle: {
+        color: Constants.TEXT_COLOR
+      }
     }
   },
   CreateEvent: {
     screen: CreateEvent,
     navigationOptions: {
-      title: 'Create event'
+      title: 'Create event',
+      headerStyle: {
+        backgroundColor: Constants.BACKGROUND_COLOR
+      },
+      headerTitleStyle: {
+        color: Constants.TEXT_COLOR
+      }
     }
   },
   ManageEvents: {
     screen: ManageEvents,
     navigationOptions: {
-      title: 'Manage events'
+      title: 'Manage events',
+      headerStyle: {
+        backgroundColor: Constants.BACKGROUND_COLOR
+      },
+      headerTitleStyle: {
+        color: Constants.TEXT_COLOR
+      }
     }
   },
   Parameters: {
     screen: Parameters,
     navigationOptions: {
-      title: 'Parameters'
+      title: 'Parameters',
+      headerStyle: {
+        backgroundColor: Constants.BACKGROUND_COLOR
+      },
+      headerTitleStyle: {
+        color: Constants.TEXT_COLOR
+      }
     }
   }
 })

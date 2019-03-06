@@ -2,6 +2,7 @@
 
 import React from 'react'
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native'
+import Constants from '../helpers/constants'
 import { connect } from 'react-redux'
 
 class ProfileMenu extends React.Component {
@@ -13,6 +14,8 @@ class ProfileMenu extends React.Component {
     const {displayLogoutPage, displayEditProfilePage} = this.props
     return(
       <View style={styles.main_container}>
+        <View style={styles.menuBar_container}>
+        </View>
         <View style={styles.avatar_container}>
           <Image style={styles.avatar} source={require('../Images/ic_tag_faces.png')} />
         </View>
@@ -20,16 +23,22 @@ class ProfileMenu extends React.Component {
           <Text style={styles.textName}>{this.props.name}</Text>
           <Text style={styles.textMail}>{this.props.email}</Text>
         </View>
+        <View style={styles.menuBar_container}>
+        </View>
         <TouchableOpacity
           style={styles.menuItem_container}
           onPress={() => displayEditProfilePage()}>
           <Text style={styles.textItemMenu}>Modifier profil</Text>
         </TouchableOpacity>
+        <View style={styles.menuBar_container}>
+        </View>
         <TouchableOpacity
           style={styles.menuItem_container}
           onPress={() => displayLogoutPage()}>
           <Text style={styles.textItemMenu}>Se deconnecter</Text>
         </TouchableOpacity>
+        <View style={styles.menuBar_container}>
+        </View>
       </View>
     )
   }
@@ -37,7 +46,8 @@ class ProfileMenu extends React.Component {
 
 const styles=StyleSheet.create({
   main_container: {
-    alignItems:'center'
+    alignItems:'center',
+    backgroundColor:Constants.BACKGROUND_COLOR
   },
   avatar_container: {
     padding:10,
@@ -50,36 +60,46 @@ const styles=StyleSheet.create({
     borderWidth: 2
   },
   infos_container: {
-    top:0,
     height:50,
-    borderRadius: 10,
+    width:170,
+    borderRadius:5,
+    bottom:5,
+    borderColor:Constants.BORDER_COLOR,
+    borderWidth:1,
+    backgroundColor:Constants.BACKGROUND_COLOR
+  },
+  menuBar_container: {
+    height:3,
     width:180,
-    backgroundColor:"bisque"
+    backgroundColor:Constants.BORDER_COLOR
   },
   menuItem_container: {
-    top:10,
-    borderColor: 'white',
-    borderWidth: 1,
     height:50,
-    borderRadius: 10,
     width:180,
-    backgroundColor:"beige"
+    backgroundColor:Constants.BACKGROUND_COLOR,
+    flexDirection:'row'
   },
   textName: {
     fontWeight: 'bold',
     fontSize: 16,
-    marginLeft: 5
+    marginLeft: 5,
+    color: Constants.TEXT_COLOR,
+    textAlign:'center'
   },
   textMail: {
-    fontSize: 14,
+    fontSize: 12,
     marginLeft: 5,
     fontStyle: 'italic',
-    color: 'grey'
+    color: Constants.TEXT_COLOR,
+    textAlign:'center'
   },
   textItemMenu: {
-    fontSize:18,
+    fontSize:15,
     textAlign:'center',
-    marginTop:10
+    marginTop:10,
+    left:20,
+    top:4,
+    color: Constants.TEXT_COLOR
   }
 })
 

@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { StyleSheet, Text, View, Button} from 'react-native'
+import Constants from '../helpers/constants'
 import { connect } from 'react-redux'
 
 class Logout extends React.Component {
@@ -23,10 +24,10 @@ class Logout extends React.Component {
         </View>
         <View style={styles.button_container}>
           <View style={styles.yesno_container}>
-            <Button title='Oui' color='#70CF70' onPress={() => this._logout()} />
+            <Button title='Oui' color={Constants.BUTTON_COLOR} onPress={() => this._logout()} />
           </View>
           <View style={styles.yesno_container}>
-            <Button title='Non' color='#70CF70' onPress={() => this.props.navigation.goBack()} />
+            <Button title='Non' color={Constants.BUTTON_COLOR} onPress={() => this.props.navigation.goBack()} />
           </View>
         </View>
       </View>
@@ -37,12 +38,13 @@ class Logout extends React.Component {
 const styles = StyleSheet.create({
   main_container: {
     flex:1,
-    backgroundColor:'#DFDFDF',
+    backgroundColor:Constants.BACKGROUND_COLOR,
     alignItems:'center'
   },
   mainText: {
     fontWeight:'bold',
-    fontSize:20
+    fontSize:20,
+    color: Constants.TEXT_COLOR
   },
   lo_text_container: {
     alignItems:'center',

@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { StyleSheet, Text, View, Image, TextInput, Button, ActivityIndicator} from 'react-native'
+import Constants from '../helpers/constants'
 import { testAPI, checkLogin } from '../API/meetmapDBApi'
 import { requestPositionPermission } from '../permissions/permissions'
 import { connect } from 'react-redux'
@@ -135,10 +136,10 @@ class MainScreen extends React.Component {
           />
         </View>
         <View style={styles.login_button_container}>
-            <Button title='Login' color='#70CF70' onPress={() => this._login()} />
+            <Button title='Login' color={Constants.BUTTON_COLOR} onPress={() => this._login()} />
         </View>
         <View style={styles.login_button_container}>
-            <Button title='Create account' color='#70CF70' onPress={() => this._displayCreateAccountPage()} />
+            <Button title='Create account' color={Constants.BUTTON_COLOR} onPress={() => this._displayCreateAccountPage()} />
         </View>
         {this._displayLoading()}
       </View>
@@ -230,11 +231,11 @@ class MainScreen extends React.Component {
 const styles = StyleSheet.create({
   main_container: {
     flex:1,
-    backgroundColor:'#DFDFDF',
+    backgroundColor: Constants.BACKGROUND_COLOR,
   },
   login_container: {
     flex:1,
-    backgroundColor:'#DFDFDF',
+    backgroundColor: Constants.BACKGROUND_COLOR,
     alignItems:'center'
   },
   avatar_container: {
@@ -245,7 +246,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
-    borderColor: '#808080',
+    borderColor: Constants.BORDER_COLOR,
     borderWidth: 2
   },
   login_text_container: {
@@ -255,10 +256,11 @@ const styles = StyleSheet.create({
   mainText: {
     fontWeight:'bold',
     fontSize:20,
+    color: Constants.TEXT_COLOR
   },
   errorText: {
     fontSize:15,
-    color:'red'
+    color: Constants.BAD_TEXT_COLOR
   },
   login_input_container: {
     alignItems:'center',
@@ -268,9 +270,9 @@ const styles = StyleSheet.create({
     height:50,
     width:200,
     padding:10,
-    borderColor: '#808080',
+    borderColor: Constants.BORDER_COLOR,
     borderWidth: 1,
-    backgroundColor:'antiquewhite'
+    backgroundColor: Constants.INPUT_COLOR
   },
   login_button_container: {
     padding:15,
@@ -278,25 +280,13 @@ const styles = StyleSheet.create({
   },
   profile_menu_container: {
     position:'absolute',
-    width:200,
-    height:235,
     top:50,
     right:0,
-    borderRadius:10,
-    backgroundColor:'antiquewhite',
-    borderWidth:1,
-    borderColor: 'white'
   },
   action_menu_container: {
     position:'absolute',
-    width:250,
-    height:175,
     top:50,
     left:0,
-    borderRadius:10,
-    backgroundColor:'antiquewhite',
-    borderWidth:1,
-    borderColor: 'white'
   },
   loading_container: {
     position: 'absolute',

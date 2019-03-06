@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native'
+import Constants from '../helpers/constants'
 
 class TopMenu extends React.Component {
   constructor(props) {
@@ -37,27 +38,24 @@ const styles = StyleSheet.create({
     borderWidth:1,
     height:50,
     borderRadius:5,
-    borderColor:'#70CF70'
+    borderColor:Constants.BORDER_COLOR
   },
   img_icon: {
     height:50,
-    width:50,
-    borderWidth:1,
-    borderRadius:5,
-    borderColor:'white',
+    width:50
   },
   left_container: {
-    backgroundColor:'antiquewhite',
+    backgroundColor:Constants.BACKGROUND_COLOR,
     height:50
   },
   middle_container: {
-    backgroundColor:'antiquewhite',
+    backgroundColor:Constants.BACKGROUND_COLOR,
     flex:1,
     height:50,
     alignItems:'center'
   },
   right_container: {
-    backgroundColor:'antiquewhite',
+    backgroundColor:Constants.BACKGROUND_COLOR,
     height:50
   },
   mainText: {

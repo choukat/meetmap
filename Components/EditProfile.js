@@ -2,6 +2,7 @@
 
 import React from 'react'
 import {StyleSheet, Text, View, Image, TextInput, Button, ScrollView, ActivityIndicator} from 'react-native'
+import Constants from '../helpers/constants'
 import { connect } from 'react-redux'
 import { editUser } from '../API/meetmapDBApi'
 
@@ -141,10 +142,10 @@ class EditProfile extends React.Component {
           />
         </View>
         <View style={styles.ep_button_container}>
-          <Button title='Change password' color='#70CF70' onPress={() => this._editPassword()} />
+          <Button title='Change password' color={Constants.BUTTON_COLOR} onPress={() => this._editPassword()} />
         </View>
         <View style={styles.ep_button_container}>
-            <Button title='Edit account' color='#70CF70' onPress={() => this._editAccount()} />
+            <Button title='Edit account' color={Constants.BUTTON_COLOR} onPress={() => this._editAccount()} />
         </View>
         {this._displayLoading()}
       </View>
@@ -163,7 +164,7 @@ class EditProfile extends React.Component {
 const styles = StyleSheet.create({
   main_container: {
     flex:1,
-    backgroundColor:'#DFDFDF',
+    backgroundColor:Constants.BACKGROUND_COLOR,
     alignItems:'center',
   },
   avatar_container: {
@@ -174,12 +175,12 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
-    borderColor: '#808080',
+    borderColor: Constants.BORDER_COLOR,
     borderWidth: 2
   },
   errorText: {
     fontSize:15,
-    color:'red'
+    color:Constants.BAD_TEXT_COLOR
   },
   ep_text_container: {
     alignItems:'center',
@@ -193,13 +194,14 @@ const styles = StyleSheet.create({
     height:50,
     width:200,
     padding:10,
-    borderColor: '#808080',
+    borderColor: Constants.BORDER_COLOR,
     borderWidth: 1,
-    backgroundColor:'antiquewhite'
+    backgroundColor:Constants.INPUT_COLOR
   },
   mainText: {
     fontWeight:'bold',
     fontSize:20,
+    color: Constants.TEXT_COLOR
   },
   ep_button_container: {
     padding:15,

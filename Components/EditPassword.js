@@ -2,6 +2,7 @@
 
 import React from 'react'
 import {StyleSheet, Text, View, TextInput, Button, ActivityIndicator} from 'react-native'
+import Constants from '../helpers/constants'
 import { editPassword } from '../API/meetmapDBApi'
 import { connect } from 'react-redux'
 
@@ -165,7 +166,7 @@ class EditPassword extends React.Component {
           />
         </View>
         <View style={styles.ep_button_container}>
-            <Button title='Change password' color='#70CF70' onPress={() => this._changePassword()} />
+            <Button title='Change password' color={Constants.BUTTON_COLOR} onPress={() => this._changePassword()} />
         </View>
         {this._displayLoading()}
       </View>
@@ -184,12 +185,12 @@ class EditPassword extends React.Component {
 const styles=StyleSheet.create({
   main_container: {
     flex:1,
-    backgroundColor:'#DFDFDF',
+    backgroundColor: Constants.BACKGROUND_COLOR,
     alignItems:'center'
   },
   errorText: {
     fontSize:15,
-    color:'red'
+    color: Constants.BAD_TEXT_COLOR
   },
   ep_text_container: {
     alignItems:'center',
@@ -205,10 +206,11 @@ const styles=StyleSheet.create({
     padding:10,
     borderColor: '#808080',
     borderWidth: 1,
-    backgroundColor:'antiquewhite'
+    backgroundColor:Constants.INPUT_COLOR
   },
   littleText: {
-    fontSize:12
+    fontSize:12,
+    color: Constants.TEXT_COLOR
   },
   littleText_container: {
     margin:5
@@ -216,13 +218,15 @@ const styles=StyleSheet.create({
   mainText: {
     fontWeight:'bold',
     fontSize:20,
+    color: Constants.TEXT_COLOR
   },
   bigText_container: {
     margin:10
   },
   bigText: {
     fontWeight:'bold',
-    fontSize:22
+    fontSize:22,
+    color: Constants.TEXT_COLOR
   },
   ep_button_container: {
     padding:15,
