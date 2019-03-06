@@ -4,6 +4,7 @@ import React from 'react'
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native'
 import Constants from '../helpers/constants'
 import { connect } from 'react-redux'
+import AnimProfileMenu from '../Animations/AnimProfileMenu'
 
 class ProfileMenu extends React.Component {
   constructor(props) {
@@ -13,6 +14,7 @@ class ProfileMenu extends React.Component {
   render() {
     const {displayLogoutPage, displayEditProfilePage} = this.props
     return(
+      <AnimProfileMenu>
       <View style={styles.main_container}>
         <View style={styles.menuBar_container}>
         </View>
@@ -40,6 +42,7 @@ class ProfileMenu extends React.Component {
         <View style={styles.menuBar_container}>
         </View>
       </View>
+      </AnimProfileMenu>
     )
   }
 }
