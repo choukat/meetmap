@@ -85,7 +85,7 @@ class CreateEvent extends React.Component {
         <View style={styles.empty_line}>
         </View>
         <View style={styles.button_container}>
-          <Button title='Create event' color={Constants.BUTTON_COLOR} onPress={() => this._createCreateEvent()} />
+          <Button title='Create event' color={Constants.BUTTON_COLOR} onPress={() => this._createEvent()} />
         </View>
         <View style={styles.empty_line}>
         </View>

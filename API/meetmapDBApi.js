@@ -5,6 +5,7 @@ const SERVICE_CHECKLOGIN='checkLogin.php'
 const SERVICE_ADDUSER='addUser.php'
 const SERVICE_EDITUSER='updateUser.php'
 const SERVICE_EDITPASSWORD='updatePassword.php'
+const SERVICE_CREATEEVENT='createEvent.php'
 
 export function testAPI () {
   const url=API_URL+SERVICE_TEST
@@ -97,4 +98,28 @@ export function editPassword(name, oldPassword, password) {
   return fetch(url, data)
     .then((response) => response.json())
     .catch((error) => console.error(error))
+}
+
+export function createEvent(name, title, time, description, longitude, latitude) {
+  const url=API_URL+SERVICE_CREATEEVENT
+
+  let data = {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify({
+      name: name,
+      title: title,
+      time: time,
+      description: description,
+      longitude: longitude,
+      latitude: latitude
+    })
+  }
+
+  return fetch(url, data)
+    .then((response) => response.json())
+    .catch((error)) => console.error(error))
 }
