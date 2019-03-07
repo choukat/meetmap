@@ -7,7 +7,8 @@ const Constants = {
   INPUT_COLOR: '#E0FFFF',
   TEXT_COLOR: '#5F9EA0',
   BAD_TEXT_COLOR: 'red',
-  INFO_BACKGROUND_COLOR: '#00FFFF'
+  INFO_BACKGROUND_COLOR: '#00FFFF',
+  DARK_COLOR: '#395f60'
 }
 
 export default Constants

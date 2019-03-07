@@ -30,6 +30,7 @@ class ProfileMenu extends React.Component {
         <TouchableOpacity
           style={styles.menuItem_container}
           onPress={() => displayEditProfilePage()}>
+          <Image style={styles.pm_icon} source={require('../Images/ic_edit_profile.png')} />
           <Text style={styles.textItemMenu}>Modifier profil</Text>
         </TouchableOpacity>
         <View style={styles.menuBar_container}>
@@ -37,6 +38,7 @@ class ProfileMenu extends React.Component {
         <TouchableOpacity
           style={styles.menuItem_container}
           onPress={() => displayLogoutPage()}>
+          <Image style={styles.pm_icon} source={require('../Images/ic_logout.png')} />
           <Text style={styles.textItemMenu}>Se deconnecter</Text>
         </TouchableOpacity>
         <View style={styles.menuBar_container}>
@@ -103,6 +105,13 @@ const styles=StyleSheet.create({
     left:20,
     top:4,
     color: Constants.TEXT_COLOR
+  },
+  pm_icon: {
+    top:10,
+    left:10,
+    right:10,
+    width: 30,
+    height: 30
   }
 })
 

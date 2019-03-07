@@ -204,7 +204,7 @@ const styles=StyleSheet.create({
     height:50,
     width:200,
     padding:10,
-    borderColor: '#808080',
+    borderColor: Constants.BORDER_COLOR,
     borderWidth: 1,
     backgroundColor:Constants.INPUT_COLOR
   },

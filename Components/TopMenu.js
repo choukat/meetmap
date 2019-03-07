@@ -41,8 +41,9 @@ const styles = StyleSheet.create({
     borderColor:Constants.BORDER_COLOR
   },
   img_icon: {
-    height:50,
-    width:50
+    height:40,
+    width:40,
+    top:4
   },
   left_container: {
     backgroundColor:Constants.BACKGROUND_COLOR,
