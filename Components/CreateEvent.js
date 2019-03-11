@@ -1,17 +1,21 @@
 // Components/Logout.js
 
 import React from 'react'
-import { StyleSheet, Text, View, ScrollView, TextInput, Button } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, TextInput, Button, ActivityIndicator } from 'react-native'
 import Constants from '../helpers/constants'
 import { connect } from 'react-redux'
 import SwitchSelector from 'react-native-switch-selector'
+import { createEvent } from '../API/meetmapDBApi'
 
 class CreateEvent extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {isLoading: false, errorDB: false, errorInput: false, errorPosition: false, eventCreated: false}
     this.title = ''
     this.description = ''
     this.time = '30'
+    this.latitude = '0'
+    this.longitude = '0'
   }
 
   _titleTextInputChanged(text) {
@@ -27,19 +31,87 @@ class CreateEvent extends React.Component {
   }
 
   _createEvent() {
-    console.log('eouw')
-    //Vérifier que tout est bien rempli, sinon msg erreur dans l'interface
-    //récupérer les coordonnées gps, si erreur -> msg erreur
-    //Envoyer Nom, Titre, Description, Durée, latitude, longitude dans la table Events
-    //Valider
-
-    // ATTENTION PENSER A MODIFIER LUPDATE DU NOM UTILISATEUR DANS L'API POUR QUE CA MODIFIE AUSSI LES EVENEMENTS !
+    this.setState({isLoading: true, inputError:false, errorDB: false})
+    if(this.props.name != '' && this.title != '' && this.time != '') {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const location = JSON.stringify(position);
+          this.longitude= position.coords.longitude.toString()
+          this.latitude = position.coords.latitude.toString()
+          console.log('position Finded')
+          console.log(this.longitude)
+          console.log(this.latitude)
+          var data = ""
+          createEvent(this.props.name, this.title, this.time, this.description, this.longitude, this.latitude)
+          .then(data => {
+            console.log(data)
+            if ( data.result == -1 ) {
+              this.setState({isLoading: false, eventCreated: true})
+            } else {
+              this.setState({errorDB : true, isLoading: false})
+            }
+          })
+        },
+        error => {console.log(error.message)
+                  this.setState({isLoading: false, errorPosition: true})},
+        { enableHighAccuracy: true, timeout: 5000}
+      );
+    } else {
+      this.setState({errorInput: true, isLoading: false})
+    }
   }
 
-  render() {
+  _displayLoading() {
+    if (this.state.isLoading) {
+      return (
+        <View style={styles.loading_container}>
+          <ActivityIndicator size='large'/>
+        </View>
+      )
+    }
+  }
+
+  _displayDBError() {
+    if(this.state.errorDB) {
+      return(
+        <Text styles={styles.errorText}>Une erreur en base de données s'est produite, rééssayez</Text>
+      )
+    }
+  }
+
+  _displayInputError() {
+    if(this.state.errorInput) {
+      return(
+        <Text styles={styles.errorText}>Vous n'avez pas saisi les champs correctement.</Text>
+      )
+    }
+  }
+
+  _displayErrorPosition() {
+    if(this.state.errorPosition) {
+      return(
+        <Text styles={styles.errorText}>Impossible de détecter votre position.</Text>
+      )
+    }
+  }
+
+  _displayEventCreated(){
+    return(
+      <View style={styles.created_container}>
+        <Text style={styles.mainText}>
+          Votre évenement à bien été créé, il est désormais visible sur la carte
+        </Text>
+        <View style={styles.button_container}>
+          <Button title='retour' color={Constants.BUTTON_COLOR} onPress={() => this.props.navigation.goBack()} />
+        </View>
+      </View>
+    )
+  }
+
+  _displayCreateEvent(){
     const timeOptions= [
       { label: '30min', value:'30'},
-      { label: '1h', value:'60', },
+      { label: '1h', value:'60' },
       { label: '1h30', value:'90'},
       { label: '2h', value:'120'}
     ]
@@ -48,6 +120,9 @@ class CreateEvent extends React.Component {
         <View style={styles.empty_line}>
         </View>
         <View style={styles.title_container}>
+          {this._displayDBError()}
+          {this._displayInputError()}
+          {this._displayErrorPosition()}
           <Text style={styles.mainText}>Titre : </Text>
           <TextInput
             style={styles.textInput}
@@ -89,14 +164,28 @@ class CreateEvent extends React.Component {
         </View>
         <View style={styles.empty_line}>
         </View>
+        {this._displayLoading()}
       </ScrollView>
     )
+  }
+
+  render() {
+    if(this.state.eventCreated) {
+      return(this._displayEventCreated())
+    } else {
+      return(this._displayCreateEvent())
+    }
   }
 }
 
 const styles = StyleSheet.create({
   main_container: {
     backgroundColor:Constants.BACKGROUND_COLOR
+  },
+  created_container: {
+    flex:1,
+    backgroundColor: Constants.BACKGROUND_COLOR,
+    alignItems:'center'
   },
   empty_line: {
     height:10,
@@ -159,6 +248,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     backgroundColor:Constants.INPUT_COLOR,
     alignItems: 'center'
+  },
+  loading_container: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  errorText: {
+    fontSize:15,
+    color:Constants.BAD_TEXT_COLOR
   }
 })
 

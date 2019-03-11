@@ -121,5 +121,5 @@ export function createEvent(name, title, time, description, longitude, latitude)
 
   return fetch(url, data)
     .then((response) => response.json())
-    .catch((error)) => console.error(error))
+    .catch((error) => console.error(error))
 }
