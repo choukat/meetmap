@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    name: state.name
+    name: state.setProfile.name
   }
 }
 

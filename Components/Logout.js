@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    logged: state.logged
+    logged: state.setProfile.logged
   }
 }
 

@@ -119,10 +119,10 @@ class CreateEvent extends React.Component {
       <ScrollView style={styles.main_container}>
         <View style={styles.empty_line}>
         </View>
+        {this._displayDBError()}
+        {this._displayInputError()}
+        {this._displayErrorPosition()}
         <View style={styles.title_container}>
-          {this._displayDBError()}
-          {this._displayInputError()}
-          {this._displayErrorPosition()}
           <Text style={styles.mainText}>Titre : </Text>
           <TextInput
             style={styles.textInput}

@@ -1,6 +1,7 @@
 // Store/configureStore.js
 
-import {createStore} from 'redux';
+import {createStore, combineReducers} from 'redux';
 import setProfile from './Reducers/loginReducer'
+import setLocalEvents from './Reducers/mapReducer'
 
-export default createStore(setProfile)
+export default createStore(combineReducers({setProfile, setLocalEvents}))

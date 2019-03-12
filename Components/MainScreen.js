@@ -301,9 +301,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    name: state.name,
-    email: state.email,
-    logged: state.logged
+    name: state.setProfile.name,
+    email: state.setProfile.email,
+    logged: state.setProfile.logged
   }
 }
 

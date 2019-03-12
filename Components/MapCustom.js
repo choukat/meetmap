@@ -3,76 +3,109 @@
 import React from 'react'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
 import Constants from '../helpers/constants'
+import ListMarkers from './ListMarkers'
+import MarkerCustom from './MarkerCustom'
+import { getLocalEvents } from '../API/meetmapDBApi'
 import { StyleSheet, Text, Alert, View, Image, TouchableOpacity} from 'react-native'
+import { connect } from 'react-redux'
 
 class MapCustom extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {latitude:0, longitude:0, positionFinded: false}
+    this._getLocalEvents = this._getLocalEvents.bind(this)
+    this.localEventsLoaded = false
+    this.state = {region: {
+                            latitude: 0,
+                            longitude: 0,
+                            latitudeDelta: 0.006450803888412793,
+                            longitudeDelta: 0.0061935558915138245,
+                          },
+                  positionFinded: false,
+                  }
+    this.oldRegion = {
+      latitude: 0,
+      longitude: 0,
+      latitudeDelta: 0.006450803888412793,
+      longitudeDelta: 0.0061935558915138245,
+    }
   }
 
   _findCoordinates() {
-    if(!this.state.positionFinded) {
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          const location = JSON.stringify(position);
-          this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude, positionFinded: true })
-          console.log('new pos')
-        },
-        error => {console.log(error.message)},
-        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-      );
-    }
-  };
+      if(!this.state.positionFinded) {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            const location = JSON.stringify(position);
+            this.setState({
+            region: {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              latitudeDelta: 0.006450803888412793,
+              longitudeDelta: 0.0061935558915138245,
+            }, positionFinded: true
+          })
+            console.log('new pos')
+          },
+          error => {console.log(error.message)},
+          { enableHighAccuracy: true, timeout: 3000 }
+        )
+      }
+  }
 
-  _goToMyPosition() {
-    this.setState({positionFinded: false})
+  _getLocalEvents() {
+    getLocalEvents(this.state.region.latitude, this.state.region.longitude, this.state.region.latitudeDelta, this.state.region.longitudeDelta)
+    .then(data => {
+      if(data != null) {
+        for (let localEvent of data) {
+          const actionSetLocalEvents = {type: "SET_LOCALEVENTS", value: data}
+          this.props.dispatch(actionSetLocalEvents)
+        }
+      }
+    })
+  }
+
+  _displayLocalEvents() {
+    return(
+        <ListMarkers/>
+    )
+  }
+
+  _checkUpdate() {
+    if(this.oldRegion.latitude >= (this.state.region.latitude + this.oldRegion.latitudeDelta)
+       || this.oldRegion.latitude <= (this.state.region.latitude - this.oldRegion.latitudeDelta)
+       || this.oldRegion.longitude >= (this.state.region.longitude + this.oldRegion.longitudeDelta)
+       || this.oldRegion.longitude <= (this.state.region.longitude - this.oldRegion.longitudeDelta)
+     ) {
+       this.oldRegion.latitude = this.state.region.latitude
+       this.oldRegion.longitude = this.state.region.longitude
+       this._getLocalEvents()
+     }
+  }
+
+  componentDidMount() {
+    this._findCoordinates()
+    this.timer = setInterval(()=> this._getLocalEvents(), 30000)
   }
 
   render() {
-    this._findCoordinates()
     return(
       <View style={{flex:1}}>
         <MapView
           provider={PROVIDER_GOOGLE}
           style={{flex: 1}}
-          region={{
-            latitude: this.state.latitude,
-            longitude: this.state.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421
-          }}
+          region={this.state.region}
           customMapStyle = {mapStyle}
           showsUserLocation={true}
-        />
-        <TouchableOpacity
-          style={styles.positionIcon_container}
-          onPress={() => this._goToMyPosition()}>
-          <Image style={styles.positionIcon_image} source={require('../Images/ic_position.png')} />
-        </TouchableOpacity>
+          showsMyLocationButton={true}
+          onRegionChangeComplete={ region => {this.setState({region})
+                                              this._checkUpdate()}}
+        >
+          {this._displayLocalEvents()}
+        </MapView>
+
       </View>
     )
   }
 }
-
-const styles=StyleSheet.create({
-  positionIcon_container: {
-    position: 'absolute',
-    right:20,
-    bottom: 20,
-    borderColor: Constants.BORDER_COLOR,
-    borderWidth: 3,
-    borderRadius: 25,
-    width:40,
-    height:40
-  },
-  positionIcon_image: {
-    height:50,
-    width:50,
-    bottom:8,
-    right:8
-  }
-})
 
 const mapStyle =
 [
@@ -214,4 +247,10 @@ const mapStyle =
   }
 ]
 
-export default(MapCustom)
+const mapStateToProps = state => {
+  return {
+    localEvents: state.setLocalEvents.localEvents
+  }
+}
+
+export default connect(mapStateToProps)(MapCustom)
