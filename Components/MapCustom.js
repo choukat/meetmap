@@ -22,12 +22,7 @@ class MapCustom extends React.Component {
                           },
                   positionFinded: false,
                   }
-    this.oldRegion = {
-      latitude: 0,
-      longitude: 0,
-      latitudeDelta: 0.006450803888412793,
-      longitudeDelta: 0.0061935558915138245,
-    }
+    this.timePassed = false
   }
 
   _findCoordinates() {
@@ -55,10 +50,8 @@ class MapCustom extends React.Component {
     getLocalEvents(this.state.region.latitude, this.state.region.longitude, this.state.region.latitudeDelta, this.state.region.longitudeDelta)
     .then(data => {
       if(data != null) {
-        for (let localEvent of data) {
-          const actionSetLocalEvents = {type: "SET_LOCALEVENTS", value: data}
-          this.props.dispatch(actionSetLocalEvents)
-        }
+        const actionSetLocalEvents = {type: "SET_LOCALEVENTS", value: data}
+        this.props.dispatch(actionSetLocalEvents)
       }
     })
   }
@@ -70,15 +63,11 @@ class MapCustom extends React.Component {
   }
 
   _checkUpdate() {
-    if(this.oldRegion.latitude >= (this.state.region.latitude + this.oldRegion.latitudeDelta)
-       || this.oldRegion.latitude <= (this.state.region.latitude - this.oldRegion.latitudeDelta)
-       || this.oldRegion.longitude >= (this.state.region.longitude + this.oldRegion.longitudeDelta)
-       || this.oldRegion.longitude <= (this.state.region.longitude - this.oldRegion.longitudeDelta)
-     ) {
-       this.oldRegion.latitude = this.state.region.latitude
-       this.oldRegion.longitude = this.state.region.longitude
-       this._getLocalEvents()
-     }
+    if(this.timePassed=true) {
+      this._getLocalEvents()
+      this.timePassed = false
+      setTimeout(() => {this.timePassed= true}, 2000)
+    }
   }
 
   componentDidMount() {

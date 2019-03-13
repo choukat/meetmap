@@ -7,6 +7,7 @@ function setLocalEvents(state = initialState, action) {
   switch (action.type) {
     case 'SET_LOCALEVENTS' :
       nextState = {
+        ...state,
         localEvents: action.value
       }
       return nextState || setState

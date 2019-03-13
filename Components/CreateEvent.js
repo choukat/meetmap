@@ -39,6 +39,9 @@ class CreateEvent extends React.Component {
           this.longitude= position.coords.longitude.toString()
           this.latitude = position.coords.latitude.toString()
           console.log('position Finded')
+          console.log(this.props.name)
+          console.log(this.title)
+          console.log(this.description)
           console.log(this.longitude)
           console.log(this.latitude)
           var data = ""
@@ -266,7 +269,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    name: state.name
+    name: state.setProfile.name
   }
 }
 

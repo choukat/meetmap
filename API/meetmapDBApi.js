@@ -39,6 +39,8 @@ export function checkLogin(name, password) {
 export function addUser(name, password, email, avatar) {
   const url=API_URL+SERVICE_ADDUSER
 
+  console.log(url)
+
   let data = {
     method: 'POST',
     headers: {
@@ -60,6 +62,8 @@ export function addUser(name, password, email, avatar) {
 
 export function editUser(oldName, name, email, avatar) {
   const url=API_URL+SERVICE_EDITUSER
+
+  console.log(url)
 
   let data = {
     method: 'POST',
@@ -83,6 +87,8 @@ export function editUser(oldName, name, email, avatar) {
 export function editPassword(name, oldPassword, password) {
   const url=API_URL+SERVICE_EDITPASSWORD
 
+  console.log(url)
+
   let data = {
     method: 'POST',
     headers: {
@@ -103,6 +109,8 @@ export function editPassword(name, oldPassword, password) {
 
 export function createEvent(name, title, time, description, longitude, latitude) {
   const url=API_URL+SERVICE_CREATEEVENT
+
+  console.log(url)
 
   let data = {
     method: 'POST',
@@ -129,7 +137,6 @@ export function getLocalEvents(latitude, longitude, latitudeDelta, longitudeDelt
   const url = API_URL+SERVICE_GETLOCALEVENTS
 
   console.log(url)
-  console.log(latitude)
 
   let data = {
     method: 'POST',
