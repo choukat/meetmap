@@ -12,6 +12,7 @@ import EditPassword from '../Components/EditPassword'
 import CreateEvent from '../Components/CreateEvent'
 import ManageEvents from '../Components/ManageEvents'
 import Parameters from '../Components/Parameters'
+import Event from '../Components/Event'
 
 const MainScreenStackNavigator = createStackNavigator({
   MainScreen: {
@@ -99,6 +100,18 @@ const MainScreenStackNavigator = createStackNavigator({
     screen: Parameters,
     navigationOptions: {
       title: 'Parameters',
+      headerStyle: {
+        backgroundColor: Constants.BACKGROUND_COLOR
+      },
+      headerTitleStyle: {
+        color: Constants.TEXT_COLOR
+      }
+    }
+  },
+  Event: {
+    screen: Event,
+    navigationOptions: {
+      title: 'Event',
       headerStyle: {
         backgroundColor: Constants.BACKGROUND_COLOR
       },

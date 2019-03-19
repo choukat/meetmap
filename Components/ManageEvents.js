@@ -4,6 +4,7 @@ import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Image, FlatList, ScrollView, ActivityIndicator } from 'react-native'
 import Geolocation from 'react-native-geolocation-service';
 import AnimFlatList from '../Animations/AnimFlatList'
+import Event from './Event'
 import Constants from '../helpers/constants'
 import { connect } from 'react-redux'
 import { getMyEvents, getMyHisto, getLocalEvents } from '../API/meetmapDBApi'
@@ -194,10 +195,18 @@ class ManageEvents extends React.Component {
     )
   }
 
+  _displayEventDetail(eventItem) {
+    const actionSetEvent = {type: "SET_EVENT", value: eventItem}
+    this.props.dispatch(actionSetEvent)
+    this.props.navigation.navigate("Event")
+  }
+
   _itemType(item) {
     return(
       <AnimFlatList>
-        <View style={styles.item_container}>
+        <TouchableOpacity
+          style={styles.item_container}
+          onPress={() => this._displayEventDetail(item)}>
           <View style={styles.emptyRow}>
           </View>
           <View style={styles.itemValue_container}>
@@ -206,7 +215,7 @@ class ManageEvents extends React.Component {
               {item.title}
             </Text>
           </View>
-        </View>
+        </TouchableOpacity>
       </AnimFlatList>
     )
   }
