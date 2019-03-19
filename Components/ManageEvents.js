@@ -1,15 +1,20 @@
 // Components/ManageEvents.js
 
 import React from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, Image, FlatList, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Image, FlatList, ScrollView, ActivityIndicator } from 'react-native'
+import Geolocation from 'react-native-geolocation-service';
 import AnimFlatList from '../Animations/AnimFlatList'
 import Constants from '../helpers/constants'
 import { connect } from 'react-redux'
+import { getMyEvents, getMyHisto, getLocalEvents } from '../API/meetmapDBApi'
 
 class ManageEvents extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {numTab: 0}
+    this.state = {numTab: 0, isLoading: false, myEvents: [], myLocalEvents: [], myHisto: []}
+    this.latitudeDelta = 0.006450803888412793
+    this.longitudeDelta = 0.0061935558915138245
+    this.firstTime = true
   }
 
   render() {
@@ -19,8 +24,16 @@ class ManageEvents extends React.Component {
         <ScrollView style={styles.listContainer}>
           {this._displayList()}
         </ScrollView>
+        {this._displayLoading()}
       </View>
     )
+  }
+
+  componentDidMount() {
+    if(this.firstTime) {
+      this._getMyEvents()
+      this.firstTime = false
+    }
   }
 
   _displayStyleTab(numTab) {
@@ -65,7 +78,7 @@ class ManageEvents extends React.Component {
       <View style={styles.tabContainer}>
         <TouchableOpacity
           style={this._displayStyleTab(0)}
-          onPress={() => this.setState({numTab: 0})}>
+          onPress={() => this._getMyEvents()}>
           <Image style={styles.me_icon} source={require('../Images/ic_event.png')} />
           <Text style={this._displayStyleTextTab(0)}>
             Mes évenements
@@ -73,7 +86,7 @@ class ManageEvents extends React.Component {
         </TouchableOpacity>
         <TouchableOpacity
           style={this._displayStyleTab(1)}
-          onPress={() => this.setState({numTab: 1})}>
+          onPress={() => this._getMyHisto()}>
           <Image style={styles.me_icon} source={require('../Images/ic_history.png')} />
           <Text style={this._displayStyleTextTab(1)}>
             Mon historique
@@ -81,7 +94,7 @@ class ManageEvents extends React.Component {
         </TouchableOpacity>
         <TouchableOpacity
           style={this._displayStyleTab(2)}
-          onPress={() => this.setState({numTab: 2})}>
+          onPress={() => this._getLocalEvents()}>
           <Image style={styles.me_icon} source={require('../Images/ic_around_me.png')} />
           <Text style={this._displayStyleTextTab(2)}>
             Autour de moi
@@ -89,10 +102,6 @@ class ManageEvents extends React.Component {
         </TouchableOpacity>
       </View>
     )
-  }
-
-  _changeTab(nextTab) {
-
   }
 
   _displayList() {
@@ -107,31 +116,81 @@ class ManageEvents extends React.Component {
         return(this._displayListMyEvents())
     }
 
-    return(
-      <Text>LA LISTE</Text>
+    return(<Text>LA LISTE</Text>)
+  }
+
+  _getMyEvents() {
+    this.setState({isLoading: true, numTab: 0})
+    getMyEvents(this.props.name).then(data => {
+      console.log(data)
+      if ( data != null ) {
+        this.setState({myEvents : data, isLoading: false})
+      } else {
+        this.setState({isLoading: false})
+      }
+    })
+  }
+
+  _getMyHisto() {
+    this.setState({isLoading: true, numTab: 1})
+    getMyHisto(this.props.name).then(data => {
+      console.log(data)
+      if ( data != null ) {
+        this.setState({myHisto : data, isLoading: false})
+      } else {
+        this.setState({isLoading: false})
+      }
+    })
+  }
+
+  _getLocalEvents() {
+    this.setState({isLoading: true, numTab: 2})
+    Geolocation.getCurrentPosition(
+      position => {
+        getLocalEvents(position.coords.latitude, position.coords.longitude, this.latitudeDelta, this.longitudeDelta).then(data => {
+            console.log(data)
+            if(data != null) {
+              this.setState({myLocalEvents: data, isLoading: false})
+            } else {
+              this.setState({isLoading: false})
+            }
+        })
+        console.log('Position get')
+      },
+      error => {
+        console.log(error.message)
+        this.setState({isLoading: false})},
+      { enableHighAccuracy: true, timeout: 15000 }
     )
   }
 
   _displayListMyEvents() {
     return(
-      <Text>MES EVENEMENTS</Text>
+      <FlatList
+        style={styles.list}
+        data={this.state.myEvents}
+        keyExtractor={(item) => item.ID.toString()}
+        renderItem={({item}) => this._itemType(item)}/>
     )
   }
 
   _displayListMyEventsHisto() {
     return(
-      <Text>HISTO MES EVENEMENTS</Text>
+      <FlatList
+        style={styles.list}
+        data={this.state.myHisto}
+        keyExtractor={(item) => item.ID.toString()}
+        renderItem={({item}) => this._itemType(item)}/>
     )
   }
 
   _displayListEventsAround() {
     return(
       <FlatList
-          style={styles.list}
-          data={this.props.localEvents}
-          extraData={this.props.favoritesFilm}
-          keyExtractor={(item) => item.ID.toString()}
-          renderItem={({item}) => this._itemType(item)}/>
+        style={styles.list}
+        data={this.state.myLocalEvents}
+        keyExtractor={(item) => item.ID.toString()}
+        renderItem={({item}) => this._itemType(item)}/>
     )
   }
 
@@ -150,6 +209,16 @@ class ManageEvents extends React.Component {
         </View>
       </AnimFlatList>
     )
+  }
+
+  _displayLoading() {
+    if (this.state.isLoading) {
+      return (
+        <View style={styles.loading_container}>
+          <ActivityIndicator size='large'/>
+        </View>
+      )
+    }
   }
 }
 
@@ -198,6 +267,15 @@ const styles = StyleSheet.create({
   itemValue_container: {
     height:50,
     flexDirection: 'row'
+  },
+  loading_container: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 
 })
@@ -205,7 +283,6 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   return {
     name: state.setProfile.name,
-    localEvents: state.setLocalEvents.localEvents
   }
 }
 

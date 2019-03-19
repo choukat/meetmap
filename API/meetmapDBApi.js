@@ -7,6 +7,8 @@ const SERVICE_EDITUSER='updateUser.php'
 const SERVICE_EDITPASSWORD='updatePassword.php'
 const SERVICE_CREATEEVENT='createEvent.php'
 const SERVICE_GETLOCALEVENTS='getLocalEvents.php'
+const SERVICE_GETMYEVENTS='getMyEvents.php'
+const SERVICE_GETMYHISTO='getMyHisto.php'
 
 export function testAPI () {
   const url=API_URL+SERVICE_TEST
@@ -149,6 +151,52 @@ export function getLocalEvents(latitude, longitude, latitudeDelta, longitudeDelt
       latitude: latitude,
       longitudeDelta: longitudeDelta,
       latitudeDelta: latitudeDelta
+    })
+  }
+
+    console.log(data.toString())
+
+  return fetch(url, data)
+    .then((response) => response.json())
+    .catch((error) => console.error(error))
+}
+
+export function getMyEvents(name) {
+  const url = API_URL+SERVICE_GETMYEVENTS
+
+  console.log(url)
+
+  let data = {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify({
+      name: name
+    })
+  }
+
+    console.log(data.toString())
+
+  return fetch(url, data)
+    .then((response) => response.json())
+    .catch((error) => console.error(error))
+}
+
+export function getMyHisto(name) {
+  const url = API_URL+SERVICE_GETMYHISTO
+
+  console.log(url)
+
+  let data = {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify({
+      name: name
     })
   }
 

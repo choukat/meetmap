@@ -2,6 +2,7 @@
 
 import React from 'react'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
+import Geolocation from 'react-native-geolocation-service';
 import Constants from '../helpers/constants'
 import ListMarkers from './ListMarkers'
 import MarkerCustom from './MarkerCustom'
@@ -19,15 +20,14 @@ class MapCustom extends React.Component {
                             longitude: 0,
                             latitudeDelta: 0.006450803888412793,
                             longitudeDelta: 0.0061935558915138245,
-                          },
-                  positionFinded: false,
+                          }
                   }
-    this.timePassed = false
+    this.positionFinded = false
   }
 
   _findCoordinates() {
-      if(!this.state.positionFinded) {
-        navigator.geolocation.getCurrentPosition(
+      if(!this.positionFinded) {
+        Geolocation.getCurrentPosition(
           position => {
             const location = JSON.stringify(position);
             this.setState({
@@ -36,12 +36,14 @@ class MapCustom extends React.Component {
               longitude: position.coords.longitude,
               latitudeDelta: 0.006450803888412793,
               longitudeDelta: 0.0061935558915138245,
-            }, positionFinded: true
+            }
           })
             console.log('new pos')
+            this.positionFinded = true
+            this._getLocalEvents()
           },
           error => {console.log(error.message)},
-          { enableHighAccuracy: true, timeout: 3000 }
+          { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
         )
       }
   }
@@ -62,14 +64,6 @@ class MapCustom extends React.Component {
     )
   }
 
-  _checkUpdate() {
-    if(this.timePassed=true) {
-      this._getLocalEvents()
-      this.timePassed = false
-      setTimeout(() => {this.timePassed= true}, 2000)
-    }
-  }
-
   componentDidMount() {
     this._findCoordinates()
     this.timer = setInterval(()=> this._getLocalEvents(), 30000)
@@ -85,12 +79,10 @@ class MapCustom extends React.Component {
           customMapStyle = {mapStyle}
           showsUserLocation={true}
           showsMyLocationButton={true}
-          onRegionChangeComplete={ region => {this.setState({region})
-                                              this._checkUpdate()}}
+          onRegionChangeComplete={ region => {this.setState({region})}}
         >
           {this._displayLocalEvents()}
         </MapView>
-
       </View>
     )
   }

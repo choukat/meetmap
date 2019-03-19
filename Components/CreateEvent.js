@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { StyleSheet, Text, View, ScrollView, TextInput, Button, ActivityIndicator } from 'react-native'
+import Geolocation from 'react-native-geolocation-service';
 import Constants from '../helpers/constants'
 import { connect } from 'react-redux'
 import SwitchSelector from 'react-native-switch-selector'
@@ -33,7 +34,7 @@ class CreateEvent extends React.Component {
   _createEvent() {
     this.setState({isLoading: true, inputError:false, errorDB: false})
     if(this.props.name != '' && this.title != '' && this.time != '') {
-      navigator.geolocation.getCurrentPosition(
+      Geolocation.getCurrentPosition(
         position => {
           const location = JSON.stringify(position);
           this.longitude= position.coords.longitude.toString()
@@ -113,10 +114,10 @@ class CreateEvent extends React.Component {
 
   _displayCreateEvent(){
     const timeOptions= [
-      { label: '30min', value:'30'},
-      { label: '1h', value:'60' },
-      { label: '1h30', value:'90'},
-      { label: '2h', value:'120'}
+      { label: '30min', value:'00:30:00'},
+      { label: '1h', value:'00:60:00' },
+      { label: '1h30', value:'01:30:00'},
+      { label: '2h', value:'02:00:00'}
     ]
     return(
       <ScrollView style={styles.main_container}>
