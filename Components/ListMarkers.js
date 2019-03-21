@@ -18,11 +18,13 @@ class ListMarkers extends React.Component {
   }
 
   _renderMarkers() {
+    const {displayEventDetail} = this.props
     return this.props.localEvents.map((item) => {
       return(
         <MapView.Marker
           key={item.ID}
-          coordinate={{latitude:Number(item.latitude), longitude: Number(item.longitude)}}>
+          coordinate={{latitude:Number(item.latitude), longitude: Number(item.longitude)}}
+          onPress={() => displayEventDetail(item)}>
           <MarkerCustom
             title={item.title}
             IDEvent={item.ID}/>

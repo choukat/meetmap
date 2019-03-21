@@ -59,8 +59,9 @@ class MapCustom extends React.Component {
   }
 
   _displayLocalEvents() {
+    const {displayEventDetail} = this.props
     return(
-        <ListMarkers/>
+        <ListMarkers displayEventDetail={displayEventDetail}/>
     )
   }
 

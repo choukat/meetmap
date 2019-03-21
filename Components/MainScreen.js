@@ -10,6 +10,7 @@ import TopMenu from './TopMenu'
 import MapCustom from './MapCustom'
 import ProfileMenu from './ProfileMenu'
 import ActionMenu from './ActionMenu'
+import Event from './Event'
 
 class MainScreen extends React.Component {
 
@@ -28,6 +29,7 @@ class MainScreen extends React.Component {
     this._displayCreateEventPage = this._displayCreateEventPage.bind(this)
     this._displayManageEventsPage = this._displayManageEventsPage.bind(this)
     this._displayParametersPage = this._displayParametersPage.bind(this)
+    this._displayEventDetail = this._displayEventDetail.bind(this)
   }
 
   _pseudoTextInputChanged(text) {
@@ -152,7 +154,7 @@ class MainScreen extends React.Component {
         <TopMenu
           clickOnProfile={this._clickOnProfile}
           clickOnActionMenu={this._clickOnActionMenu}/>
-        <MapCustom/>
+        <MapCustom displayEventDetail={this._displayEventDetail}/>
         {this._displayProfileMenu()}
         {this._displayActionMenu()}
         {this._displayLoading()}
@@ -184,6 +186,13 @@ class MainScreen extends React.Component {
         </View>
       )
     }
+  }
+
+  _displayEventDetail(eventItem) {
+    console.log('CLICK')
+    const actionSetEvent = {type: "SET_EVENT", value: eventItem}
+    this.props.dispatch(actionSetEvent)
+    this.props.navigation.navigate("Event")
   }
 
   _displayWaitPermission() {

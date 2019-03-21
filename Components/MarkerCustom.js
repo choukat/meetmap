@@ -1,7 +1,7 @@
 // ./Components/MarkerCustom.js
 
 import React from 'react'
-import {StyleSheet, View, Text} from 'react-native'
+import {StyleSheet, View, Text, TouchableOpacity} from 'react-native'
 import Constants from '../helpers/constants'
 
 class MarkerCustom extends React.Component {
@@ -13,11 +13,11 @@ class MarkerCustom extends React.Component {
     const {title, IDEvent} = this.props
     return(
       <View style={styles.container}>
-      <View style={styles.bubble}>
-        <Text style={styles.eventText}>{this.props.title}</Text>
-      </View>
-      <View style={styles.arrowBorder} />
-      <View style={styles.arrow} />
+        <View style={styles.bubble}>
+          <Text style={styles.eventText}>{this.props.title}</Text>
+        </View>
+        <View style={styles.arrowBorder} />
+        <View style={styles.arrow} />
       </View>
     )
   }

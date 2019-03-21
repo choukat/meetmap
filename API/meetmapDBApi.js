@@ -9,6 +9,7 @@ const SERVICE_CREATEEVENT='createEvent.php'
 const SERVICE_GETLOCALEVENTS='getLocalEvents.php'
 const SERVICE_GETMYEVENTS='getMyEvents.php'
 const SERVICE_GETMYHISTO='getMyHisto.php'
+const SERVICE_UPDATEEVENT='updateEvent.php'
 
 export function testAPI () {
   const url=API_URL+SERVICE_TEST
@@ -201,6 +202,30 @@ export function getMyHisto(name) {
   }
 
     console.log(data.toString())
+
+  return fetch(url, data)
+    .then((response) => response.json())
+    .catch((error) => console.error(error))
+}
+
+export function updateEvent(ID, title, time, description) {
+  const url=API_URL+SERVICE_UPDATEEVENT
+
+  console.log(url)
+
+  let data = {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify({
+      ID: ID,
+      title: title,
+      time: time,
+      description: description
+    })
+  }
 
   return fetch(url, data)
     .then((response) => response.json())
