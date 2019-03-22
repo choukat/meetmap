@@ -5,6 +5,7 @@ import {StyleSheet, Text, View, Image, TextInput, Button, ScrollView, ActivityIn
 import Constants from '../helpers/constants'
 import { connect } from 'react-redux'
 import { editUser } from '../API/meetmapDBApi'
+import Avatar from './Avatar'
 
 class EditProfile extends React.Component {
   constructor(props) {
@@ -113,7 +114,7 @@ class EditProfile extends React.Component {
     return(
       <View style={styles.main_container}>
         <View style={styles.avatar_container}>
-          <Image style={styles.avatar} source={require('../Images/ic_tag_faces.png')} />
+          <Avatar/>
         </View>
         {this._displayErrorBase()}
         {this._displayErrorType()}

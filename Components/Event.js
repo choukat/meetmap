@@ -12,21 +12,19 @@ class Event extends React.Component {
   constructor(props) {
     super(props)
     this.state = {isLoading: false, errorDB: false, errorInput: false, errorPosition: false, eventCreated: false, edit:false}
-    this.title = this.props.event.title
-    this.description = this.props.event.description
-    this.time = this.props.event.time
+    this.event = this.props.event
   }
 
   _titleTextInputChanged(text) {
-    this.title = text
+    this.event.title = text
   }
 
   _descriptionTextInputChanged(text) {
-    this.description = text
+    this.event.description = text
   }
 
   _timeSwitchChanged(time) {
-    this.time = time
+    this.event.time = time
   }
 
   _displayLoading() {
@@ -40,7 +38,7 @@ class Event extends React.Component {
   }
 
   _displayEditButton() {
-    if(this.props.name == this.props.event.name) {
+    if(this.props.name == this.event.name) {
       return(
         <TouchableOpacity style={styles.edit_container}
                           onPress= {() => this.setState({edit: !this.state.edit})}>
@@ -59,7 +57,7 @@ class Event extends React.Component {
           <TextInput
             style={styles.textInput}
             placeholder='Titre de votre évenement...'
-            defaultValue={this.props.event.title}
+            defaultValue={this.event.title}
             onChangeText={(text) => this._titleTextInputChanged(text)}
           />
         </View>
@@ -67,7 +65,7 @@ class Event extends React.Component {
     } else {
       return(
         <View style={styles.title_container}>
-          <Text style={styles.mainText}>Titre : {this.props.event.title}</Text>
+          <Text style={styles.mainText}>Titre : {this.event.title}</Text>
           <Text style={styles.littleText}>par {this.props.name}</Text>
         </View>
       )
@@ -83,7 +81,7 @@ class Event extends React.Component {
             style={styles.descriptionInput}
             placeholder='Décrivez votre évenement si nécessaire...'
             onChangeText={(text) => this._descriptionTextInputChanged(text)}
-            defaultValue={this.props.event.description}
+            defaultValue={this.event.description}
             multiline = {true}
             numberOfLines = {11}
           />
@@ -96,7 +94,7 @@ class Event extends React.Component {
             <Text style={styles.mainText}>Description : </Text>
           </View>
           <ScrollView style={styles.description_text}>
-            <Text>{this.props.event.description}</Text>
+            <Text>{this.event.description}</Text>
           </ScrollView>
         </View>
       )
@@ -142,7 +140,7 @@ class Event extends React.Component {
         { label: '2h', value:'02:00:00'}
       ]
 
-      const initialValue = this._getInitialTimeValue(this.props.event.time)
+      const initialValue = this._getInitialTimeValue(this.event.time)
 
       return(
         <View style={styles.time_container}>
@@ -162,7 +160,7 @@ class Event extends React.Component {
     } else {
       return(
         <View style={styles.time_container}>
-          <Text style={styles.mainText}>Durée : {this._getTimeValueToDisplay(this.props.event.time)}</Text>
+          <Text style={styles.mainText}>Durée : {this._getTimeValueToDisplay(this.event.time)}</Text>
         </View>
       )
     }
@@ -179,9 +177,9 @@ class Event extends React.Component {
       return(
         <View style={styles.button_container}>
           <LetsGoButton
-            label={this.props.event.title}
-            latitude= {this.props.event.latitude}
-            longitude= {this.props.event.longitude}
+            label={this.event.title}
+            latitude= {this.event.latitude}
+            longitude= {this.event.longitude}
           />
         </View>
       )
@@ -191,13 +189,16 @@ class Event extends React.Component {
   _updateEvent() {
     console.log('update')
     this.setState({isLoading: true, inputError: false, errorDB:false})
-    if(this.state.edit && this.props.name != '' && this.title != '' && this.description != '' && this.time != '') {
-      updateEvent(this.props.event.ID, this.title, this.time, this.description)
+    if(this.state.edit && this.props.name != '' && this.event.title != '' && this.event.description != '' && this.event.time != '') {
+      updateEvent(this.event.ID, this.event.title, this.event.time, this.event.description)
       .then(data => {
           console.log(data)
           if(data.result == -1) {
+            const actionSetEvent = {type: "SET_EVENT", value: this.event}
+            this.props.dispatch(actionSetEvent)
             this.setState({isLoading: false, edit: false})
           } else {
+            this.event = this.props.event
             this.setState({errorDB: true, isLoading: false})
           }
       })

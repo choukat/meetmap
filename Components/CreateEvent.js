@@ -14,7 +14,7 @@ class CreateEvent extends React.Component {
     this.state = {isLoading: false, errorDB: false, errorInput: false, errorPosition: false, eventCreated: false}
     this.title = ''
     this.description = ''
-    this.time = '30'
+    this.time = '00:30:00'
     this.latitude = '0'
     this.longitude = '0'
   }
@@ -42,6 +42,7 @@ class CreateEvent extends React.Component {
           console.log('position Finded')
           console.log(this.props.name)
           console.log(this.title)
+          console.log(this.time)
           console.log(this.description)
           console.log(this.longitude)
           console.log(this.latitude)

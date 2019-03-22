@@ -1,7 +1,7 @@
 // ./Components/MarkerCustom.js
 
 import React from 'react'
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native'
+import {StyleSheet, View, Text, TouchableOpacity, Image} from 'react-native'
 import Constants from '../helpers/constants'
 
 class MarkerCustom extends React.Component {
@@ -14,6 +14,7 @@ class MarkerCustom extends React.Component {
     return(
       <View style={styles.container}>
         <View style={styles.bubble}>
+          <Image style={styles.mc_icon} source={require('../Images/ic_event_map.png')} />
           <Text style={styles.eventText}>{this.props.title}</Text>
         </View>
         <View style={styles.arrowBorder} />
@@ -29,7 +30,7 @@ const styles=StyleSheet.create({
     alignSelf: 'flex-start',
   },
   bubble: {
-    flex: 0,
+    flex: 1,
     flexDirection: 'row',
     alignSelf: 'flex-start',
     backgroundColor: Constants.BUTTON_COLOR,
@@ -40,7 +41,8 @@ const styles=StyleSheet.create({
   },
   eventText: {
     color: Constants.BACKGROUND_COLOR,
-    fontSize: 10,
+    fontSize: 13,
+    marginLeft:3
   },
   arrow: {
     backgroundColor: 'transparent',
@@ -58,6 +60,10 @@ const styles=StyleSheet.create({
     alignSelf: 'center',
     marginTop: -0.5,
   },
+  mc_icon: {
+    width: 17,
+    height: 17
+  }
 })
 
 export default(MarkerCustom)

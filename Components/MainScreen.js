@@ -1,7 +1,7 @@
 // Components/mainScreen.js
 
 import React from 'react'
-import { StyleSheet, Text, View, Image, TextInput, Button, ActivityIndicator} from 'react-native'
+import { StyleSheet, Text, View, Image, TextInput, Button, ActivityIndicator, TouchableOpacity} from 'react-native'
 import Constants from '../helpers/constants'
 import { testAPI, checkLogin } from '../API/meetmapDBApi'
 import { requestPositionPermission } from '../permissions/permissions'
@@ -166,10 +166,16 @@ class MainScreen extends React.Component {
     if(this.state.profileMenu)
     {
       return(
-        <View style={styles.profile_menu_container}>
-          <ProfileMenu
-            displayLogoutPage={this._displayLogoutPage}
-            displayEditProfilePage={this._displayEditProfilePage}/>
+        <View style={styles.screen_container}>
+          <View style={styles.profile_menu_container}>
+            <TouchableOpacity style={styles.empty_container}
+                            onPress={() => this._clickOnProfile()}/>
+            <ProfileMenu
+              displayLogoutPage={this._displayLogoutPage}
+              displayEditProfilePage={this._displayEditProfilePage}/>
+          </View>
+          <TouchableOpacity style={styles.action_menu_bottom_container}
+                            onPress={() => this._clickOnProfile()}/>
         </View>
       )
     }
@@ -178,11 +184,17 @@ class MainScreen extends React.Component {
   _displayActionMenu() {
     if(this.state.actionMenu) {
       return(
-        <View style={styles.action_menu_container}>
-          <ActionMenu
-            displayCreateEventPage={this._displayCreateEventPage}
-            displayManageEventsPage={this._displayManageEventsPage}
-            displayParametersPage={this._displayParametersPage}/>
+        <View style={styles.screen_container}>
+          <View style={styles.action_menu_container}>
+            <ActionMenu
+              displayCreateEventPage={this._displayCreateEventPage}
+              displayManageEventsPage={this._displayManageEventsPage}
+              displayParametersPage={this._displayParametersPage}/>
+            <TouchableOpacity style={styles.empty_container}
+                              onPress={() => this._clickOnActionMenu()}/>
+          </View>
+          <TouchableOpacity style={styles.action_menu_bottom_container}
+                            onPress={() => this._clickOnActionMenu()}/>
         </View>
       )
     }
@@ -288,14 +300,29 @@ const styles = StyleSheet.create({
     width:200
   },
   profile_menu_container: {
-    position:'absolute',
-    top:50,
+    flexDirection:'row',
     right:0,
   },
-  action_menu_container: {
+  screen_container: {
     position:'absolute',
     top:50,
     left:0,
+    width:'100%',
+    height:'100%'
+  },
+  action_menu_container: {
+    left:0,
+    flexDirection:'row'
+  },
+  action_menu_bottom_container: {
+    flex:1,
+    width:'100%',
+    height:'100%'
+  },
+  empty_container:{
+    flex:1,
+    width:'100%',
+    height:'100%'
   },
   loading_container: {
     position: 'absolute',

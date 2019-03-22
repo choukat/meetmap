@@ -3,6 +3,7 @@
 import React from 'react'
 import ImagePicker from 'react-native-image-picker'
 import { StyleSheet, Image, TouchableOpacity } from 'react-native'
+import {uploadImg} from '../API/fileTransfertAPI'
 
 class Avatar extends React.Component {
 
@@ -26,6 +27,14 @@ class Avatar extends React.Component {
         let requireSource = {uri: response.uri}
         console.log(requireSource.toString())
         this.setState({avatarImg: requireSource})
+        const image = {
+          uri: response.uri,
+          type: 'image/jpeg',
+          name: 'myImage' + '-' + Date.now() + '.jpg',
+        }
+        uploadImg(image).then(data => {
+          console.log(data)
+        })
       }
     })
   }
