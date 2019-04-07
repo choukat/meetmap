@@ -1,5 +1,5 @@
 // API/meetmapDBApi.js
-const API_URL='https://meetmapapi-dot-meetmap-232214.appspot.com/'
+const API_URL='SECRET'
 const SERVICE_TEST='test.php'
 const SERVICE_CHECKLOGIN='checkLogin.php'
 const SERVICE_ADDUSER='addUser.php'
